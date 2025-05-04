@@ -6,8 +6,30 @@ import pytest
 import time
 
 link = 'http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/'
-#link = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019'
-#link = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer7'
+
+@pytest.mark.register_user
+class TestUserAddToBasketFromProductPage:
+    @pytest.fixture(scope='function', autouse=True)
+    def setup(self, browser):
+        page = LoginPage(browser, 'http://selenium1py.pythonanywhere.com/en-gb/accounts/login/')
+        page.open()
+        email = str(time.time()) + '@fakemail.org'
+        password = str(time.time()) + 'qazwsx'
+        page.register_new_user(email, password)
+        page.should_be_authorized_user()
+
+    def test_user_can_add_product_to_basket(self, browser):
+        page = ProductPage(browser, link)
+        page.open()
+        page.buy_product()
+        page.should_be_purchase_confirmation()
+        page.should_be_basket_price()
+
+    def test_user_cant_see_success_message(self, browser):
+        page = ProductPage(browser, link)
+        page.open()
+        page.should_not_be_success_message()
+
 
 @pytest.mark.parametrize('link', ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0",
                                   "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer1",
