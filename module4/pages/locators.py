@@ -6,9 +6,6 @@ class BasePageLocators:
     BASKET_LINK = (By.CSS_SELECTOR, 'div.basket-mini a.btn')
     USER_ICON = (By.CSS_SELECTOR, ".icon-user")
 
-class MainPageLocators:
-    LOGIN_LINK = (By.CSS_SELECTOR, '#login_link')
-
 class LoginPageLocators:
     LOG_IN_FORM = (By.CSS_SELECTOR, '#login_form')
     REGISTRATION_FORM = (By.CSS_SELECTOR, '#register_form')
